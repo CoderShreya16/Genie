@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const summarizeRoutes = require("./routes/summarize.routes");
+const quizRoutes = require("./routes/quiz.routes");
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api", summarizeRoutes);
+app.use("/api", quizRoutes);
 
 // 404 fallback for unmatched routes
 app.use((req, res) => {

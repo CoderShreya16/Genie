@@ -5,10 +5,12 @@ import WorkspaceHeader from "../../components/workspace/WorkspaceHeader";
 import UploadSection from "../../components/workspace/UploadSection";
 import AiActions from "../../components/workspace/AiActions";
 import OutputPanel from "../../components/workspace/OutputPanel";
+import QuizResults from "../../components/workspace/QuizResults";
 import RecentActivity from "../../components/workspace/RecentActivity";
 import GlobalStyles from "../../styles/GlobalStyles";
 import { PLACEHOLDER_OUTPUTS } from "../../data/workspaceActions";
 import { summarizeNotes } from "../../services/summarizeApi";
+import { generateQuiz } from "../../services/quizApi";
 
 export default function WorkspacePage() {
     const [selectedAction, setSelectedAction] = useState(null);
@@ -16,6 +18,7 @@ export default function WorkspacePage() {
     const [uploadedFileName, setUploadedFileName] = useState("");
     const [isGenerating, setIsGenerating] = useState(false);
     const [outputText, setOutputText] = useState("");
+    const [quizData, setQuizData] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
@@ -27,30 +30,30 @@ export default function WorkspacePage() {
 
         setIsGenerating(true);
         setOutputText("");
+        setQuizData(null);
         setErrorMessage("");
 
-        // Only "summarize" is wired to a real backend endpoint so far.
-        // Quiz / Cheat Notes / Verify still use placeholder text until
-        // their backend routes exist.
-        if (selectedAction !== "summarize") {
-            setTimeout(() => {
-                setOutputText(PLACEHOLDER_OUTPUTS[selectedAction]);
-                setIsGenerating(false);
-            }, 1200);
-            return;
-        }
-
-        if (!notesText.trim()) {
-            setErrorMessage("Please paste some notes before generating a summary.");
+        if (!notesText.trim() && (selectedAction === "summarize" || selectedAction === "quiz")) {
+            setErrorMessage("Please paste some notes before generating.");
             setIsGenerating(false);
             return;
         }
 
         try {
-            const summary = await summarizeNotes(notesText.trim());
-            setOutputText(summary);
+            if (selectedAction === "summarize") {
+                const summary = await summarizeNotes(notesText.trim());
+                setOutputText(summary);
+            } else if (selectedAction === "quiz") {
+                const quiz = await generateQuiz(notesText.trim());
+                setQuizData(quiz);
+            } else {
+                // Cheat Notes / Verify Notes don't have backend routes yet —
+                // fall back to placeholder text.
+                await new Promise((resolve) => setTimeout(resolve, 1200));
+                setOutputText(PLACEHOLDER_OUTPUTS[selectedAction]);
+            }
         } catch (error) {
-            console.error("[WorkspacePage] Summarize request failed:", error);
+            console.error(`[WorkspacePage] ${selectedAction} request failed:`, error);
             setErrorMessage(error.message || "Something went wrong. Please try again.");
         } finally {
             setIsGenerating(false);
@@ -90,7 +93,7 @@ export default function WorkspacePage() {
                             </div>
                         )}
 
-                        <OutputPanel outputText={outputText} />
+                        {quizData ? <QuizResults quiz={quizData} /> : <OutputPanel outputText={outputText} />}
 
                         <RecentActivity />
                     </div>
