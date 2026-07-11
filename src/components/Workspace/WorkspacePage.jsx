@@ -5,7 +5,7 @@ import WorkspaceHeader from "../../components/workspace/WorkspaceHeader";
 import UploadSection from "../../components/workspace/UploadSection";
 import AiActions from "../../components/workspace/AiActions";
 import OutputPanel from "../../components/workspace/OutputPanel";
-import QuizResults from "../../components/workspace/QuizResults";
+import QuizFlow from "../../components/workspace/quiz/QuizFlow";
 import RecentActivity from "../../components/workspace/RecentActivity";
 import GlobalStyles from "../../styles/GlobalStyles";
 import { PLACEHOLDER_OUTPUTS } from "../../data/workspaceActions";
@@ -60,6 +60,17 @@ export default function WorkspacePage() {
         }
     };
 
+    const handleBackToWorkspace = () => {
+        setQuizData(null);
+        setSelectedAction(null);
+        setOutputText("");
+        setErrorMessage("");
+    };
+
+    const handleQuizRegenerated = (newQuiz) => {
+        setQuizData(newQuiz);
+    };
+
     return (
         <div className="min-h-screen bg-white font-body antialiased">
             <GlobalStyles />
@@ -93,7 +104,16 @@ export default function WorkspacePage() {
                             </div>
                         )}
 
-                        {quizData ? <QuizResults quiz={quizData} /> : <OutputPanel outputText={outputText} />}
+                        {quizData ? (
+                            <QuizFlow
+                                quiz={quizData}
+                                notes={notesText.trim()}
+                                onBackToWorkspace={handleBackToWorkspace}
+                                onQuizRegenerated={handleQuizRegenerated}
+                            />
+                        ) : (
+                            <OutputPanel outputText={outputText} />
+                        )}
 
                         <RecentActivity />
                     </div>
