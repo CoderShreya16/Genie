@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Copy, Download, Check, Sparkles } from "lucide-react";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
+import MarkdownRenderer from "../shared/MarkdownRenderer";
 
 const PLACEHOLDER_TEXT = "Your AI-generated results will appear here.";
 
-export default function OutputPanel({ outputText }) {
+export default function OutputPanel({ outputText, renderMarkdown = false }) {
     const [copied, setCopied] = useState(false);
     const hasOutput = Boolean(outputText);
 
@@ -43,7 +44,11 @@ export default function OutputPanel({ outputText }) {
 
             <div className="mt-5 min-h-[220px] flex-1 rounded-2xl border border-slate-100 bg-slate-50/60 p-5">
                 {hasOutput ? (
-                    <p className="whitespace-pre-line text-sm leading-relaxed text-slate-700">{outputText}</p>
+                    renderMarkdown ? (
+                        <MarkdownRenderer content={outputText} />
+                    ) : (
+                        <p className="whitespace-pre-line text-sm leading-relaxed text-slate-700">{outputText}</p>
+                    )
                 ) : (
                     <div className="flex h-full min-h-[190px] flex-col items-center justify-center gap-3 text-center">
                         <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-500">

@@ -1,0 +1,78 @@
+.genie-markdown {
+    line-height: 1.75;
+    word-break: break-word;
+}
+
+.genie-markdown p {
+    margin: 0.6rem 0;
+}
+
+.genie-markdown strong {
+    font-weight: 700;
+    color: inherit;
+}
+
+.genie-markdown h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+.genie-markdown h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0.9rem 0;
+}
+
+.genie-markdown h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0.8rem 0;
+}
+
+.genie-markdown ul,
+.genie-markdown ol {
+    padding-left: 1.4rem;
+    margin: 0.8rem 0;
+}
+
+.genie-markdown li {
+    margin: 0.3rem 0;
+}
+
+.genie-markdown code {
+    background: rgba(99, 102, 241, .08);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: .9em;
+}
+
+.genie-markdown pre {
+    border-radius: 12px;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.genie-markdown pre code {
+    background: transparent;
+    padding: 0;
+}
+
+.genie-markdown table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.genie-markdown th,
+.genie-markdown td {
+    border: 1px solid #e2e8f0;
+    padding: 10px;
+}
+
+.genie-markdown blockquote {
+    border-left: 4px solid #6366f1;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: #64748b;
+}

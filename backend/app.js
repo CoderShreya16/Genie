@@ -3,6 +3,10 @@ const cors = require("cors");
 const summarizeRoutes = require("./routes/summarize.routes");
 const quizRoutes = require("./routes/quiz.routes");
 const analysisRoutes = require("./routes/analysis.routes");
+const chatRoutes = require("./routes/chat.routes");
+const cheatNotesRoutes = require("./routes/cheatnotes.routes");
+const verifyRoutes = require("./routes/verify.routes");
+const workspaceRoutes = require("./routes/workspace.routes");
 
 const app = express();
 
@@ -16,6 +20,10 @@ app.get("/api/health", (req, res) => {
 app.use("/api", summarizeRoutes);
 app.use("/api", quizRoutes);
 app.use("/api", analysisRoutes);
+app.use("/api", chatRoutes);
+app.use("/api", cheatNotesRoutes);
+app.use("/api", verifyRoutes);
+app.use("/api", workspaceRoutes);
 
 // 404 fallback for unmatched routes
 app.use((req, res) => {
